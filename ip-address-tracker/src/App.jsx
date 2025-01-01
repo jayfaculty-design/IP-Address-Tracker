@@ -14,6 +14,13 @@ export default function App() {
   const [query, setQuery] = useState("");
   const [error, setError] = useState("");
 
+  const customIcon = L.icon({
+    iconUrl: "/icon-location.svg", //
+    iconSize: [40, 40], //
+    iconAnchor: [20, 40], //
+    popupAnchor: [0, -40], //
+  });
+
   useEffect(() => {
     if (mapRef.current) {
       console.log("Map is already initialized");
@@ -28,6 +35,13 @@ export default function App() {
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     }).addTo(mapRef.current);
 
+    // Remove any existing markers
+    mapRef.current.eachLayer((layer) => {
+      if (layer instanceof L.Marker) {
+        mapRef.current.removeLayer(layer);
+      }
+    });
+
     L.marker([51.5, -0.09])
       .addTo(mapRef.current)
       .bindPopup("A pretty CSS popup.<br> Easily customizable.")
@@ -40,7 +54,7 @@ export default function App() {
           console.log("Geolocation success:", latitude, longitude);
           setUserLocation({ latitude, longitude });
           mapRef.current.setView([latitude, longitude], 13);
-          L.marker([latitude, longitude])
+          L.marker([latitude, longitude], { icon: customIcon })
             .addTo(mapRef.current)
             .bindPopup("Your Loaction")
             .openPopup();
