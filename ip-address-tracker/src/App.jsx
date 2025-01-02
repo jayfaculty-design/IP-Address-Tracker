@@ -44,7 +44,7 @@ export default function App() {
 
     L.marker([51.5, -0.09])
       .addTo(mapRef.current)
-      .bindPopup("A pretty CSS popup.<br> Easily customizable.")
+      .bindPopup("Getting your location")
       .openPopup();
 
     if ("geolocation" in navigator) {
